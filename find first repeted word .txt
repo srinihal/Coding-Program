@@ -1,0 +1,23 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    string s;
+    cin>>s;
+    int i,j,k=1;
+    for(i=0;s[i];i++)
+    {
+        for(j=0;j<i;j++)
+        {
+            if(s[i]==s[j])
+           { 
+               while(k)
+               {
+                cout<<s[i];
+                k=0;
+               break;
+               }
+           }
+        }
+    }
+}

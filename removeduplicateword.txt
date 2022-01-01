@@ -1,0 +1,71 @@
+........... remove adjetcy duplicate
+#include<bits/stdc++.h>
+
+using namespace std;
+int main()
+{
+    char s[100];
+    cin>>s;
+    int i,j,n=strlen(s);
+    sort(s,s+n);
+    for(i=0;s[i];i++)
+    {
+        if(s[i]==s[i+1])
+        {
+            for(j=i;s[j];j++)
+            {
+                s[j]=s[j+1];
+            }
+            i--;
+        }
+    }
+    cout<<s;
+    return 0;
+}
+..................................... remove dupliacte from every where
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    char s[100];
+    cin>>s;
+    int i,j,n=strlen(s);
+    for(i=0;s[i];i++)
+    {
+        for(j=0;j<i;j++)
+        {
+            if(s[i]==s[j])
+            {
+                break;
+            }
+        }
+        if(i==j)
+        {
+            cout<<s[i];
+        }
+    }
+    return 0;
+}
+
+............... eg3 duplicate remove ....
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    int n,i,j,k,arr1[26]={0};
+    string arr,res;
+    cin>>arr;
+    
+    
+    for(int i=0;arr[i];i++){
+      if(arr1[arr[i]-'a']== false){
+        res =res+ arr[i];
+        arr1[arr[i]-'a'] = true;
+      
+        }
+    }
+    cout<<res;
+    
+}

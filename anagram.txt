@@ -1,0 +1,46 @@
+/******************************************************************************
+
+                            Online C Compiler.
+                Code, Compile, Run and Debug C program online.
+Write your code in this editor and press "Run" button to compile and execute it.
+
+*******************************************************************************/
+
+#include <stdio.h>
+int anagram(char a[],char b[])
+
+int main()
+
+{
+char a[100], b[100];
+gets(a);
+gets(b);
+if (anagram (a, b) ==1)
+    printf("string  is anagram");
+else
+    printf("string is not anagram");
+return 0;
+}
+
+int anagram(char a[],char b[])
+{
+    int f[26]={0},s[26]={0},c=0;
+    while(f[c]!=='\0')
+    {
+        f[a[c]-'a']++;
+        c++;
+    }
+    c=0;
+     while(f[c]!=='\0')
+    {
+        f[b[c]-'a']++;
+        c++;
+    }
+    for(c=0;c<26;c++)
+    {
+        if(f[c]!==f[c])
+        return 0;
+    }
+    return 1;
+    
+}

@@ -1,0 +1,21 @@
+Cloud Computing means storing and accessing data and programs over the Internet instead of your computer’s hard drive. The cloud is just a metaphor for the Internet.
+
+DROPS Is Division and Replication of Data in the Cloud for Optimal Performance and Security.
+
+Cloud drops technology is about securing data over the cloud because when the users outsource their data to third party administrative control, it gives rise to security concerns.The data compromise may occur due to attacks by other users and nodes within the cloud.
+
+Accessing the data by unauthorized users and processes must be prevented, otherwise, one weak entity will put the whole cloud at risk. Also, the security procedure must be a concern in the improvement of data recovery time.
+
+Threats:
+
+The neighboring entity may provide an opportunity to an attacker to bypass the user defenses.
+The off site data storage cloud utility requires users to move data in clouds visualization and shared environment that may cause various security concerns.
+Pooling and elasticity of the cloud, allow the physical resources to be shared among many users. These shared resources may be reassigned to other users for some instance of time that may result in data compromise.
+A multi-tenant virtual environment may result in VM to escape the boundaries of virtual machine monitor(VMM) which can interfere to other VMs may access to unauthorized data.
+In cross tenant virtualized network, due to improper media sanitization, the customer data can also get leaked.
+
+Data security strategies:
+
+In the DROPS methodology, a file is divided into fragments, and replicate the fragmented data over the cloud nodes, which is duplicating the data. Each of the nodes stores only a single fragment of a particular data file that ensures that even in the case of a successful attack, no meaningful information is revealed to the attacker.
+the nodes storing the fragments are separated by a certain distance by means of graph T-coloring to prohibit an attacker of guessing the locations of the fragments.
+For a cloud to be secure all participating entities must be secure. In a system with multiple units, the highest level of systems security is equal to the security level of the weakest entity.

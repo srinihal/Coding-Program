@@ -1,0 +1,952 @@
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| emp                |
+| first              |
+| login              |
+| man                |
+| mysql              |
+| new                |
+| nm                 |
+| performance_schema |
+| sys                |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use new;
+Database changed
+mysql> show tables;
++---------------+
+| Tables_in_new |
++---------------+
+| a             |
+| c             |
++---------------+
+2 rows in set (0.00 sec)
+
+mysql> use c;
+ERROR 1049 (42000): Unknown database 'c'
+mysql> select* from  c;
++------+-------+--------+----------+
+| id   | name  | salary | city     |
++------+-------+--------+----------+
+|    1 | Asad  |  35000 | Bareilly |
+|    2 | Nihal |  45000 | Bareilly |
+|    3 | Afzal |  60000 | Dahia    |
++------+-------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select name from c
+    -> where salary=(select max(salary) from c);
++-------+
+| name  |
++-------+
+| Afzal |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select name from c
+    -> where salary=(select max(salary) from c where salary<(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> select name from c
+    -> where salary=(select max(salary) from c <(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '<(select max(salary) from c)' at line 2
+mysql> select name from c
+    -> (select max(salary) from c where salary<(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(select max(salary) from c where salary<(select max(salary) from c)' at line 2
+mysql> select name from c
+    -> where salary<(select max(salary) from c <(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '<(select max(salary) from c)' at line 2
+mysql> select name from c
+    -> where salary(select max(salary) from c where salary=(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select max(salary) from c where salary=(select max(salary) from c)' at line 2
+mysql> select max(salary) from c
+    -> where salary<(select max(salary) from c);
++-------------+
+| max(salary) |
++-------------+
+|       45000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select max(salary) from c
+    -> where salary<(select max(salary) from  c where salary <(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> select max(salary) from c
+    -> where salary(select max(salary) from c where salary=(select max(salary) from c));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select max(salary) from c where salary=(select max(salary) from c))' at line 2
+mysql> select max(salary) from c
+    -> where salary<(select max(salary) from  c where salary <(select max(salary) from c));
++-------------+
+| max(salary) |
++-------------+
+|       35000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select name from c
+    -> where salary=select max(salary) from c
+    ->  where salary<(select max(salary) from  c where salary <(select max(salary) from c));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select max(salary) from c
+ where salary<(select max(salary) from  c where salary' at line 2
+mysql> select name from c
+    -> where salary<(select max(salary) from  c where salary <(select max(salary) from c));
++------+
+| name |
++------+
+| Asad |
++------+
+1 row in set (0.00 sec)
+
+mysql> select name from c
+    -> where salary<(select max(salary) from  c);
++-------+
+| name  |
++-------+
+| Asad  |
+| Nihal |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> select name from c
+    -> where salary=(select max(salary) from c where salary<(select max(salary) from c));
++-------+
+| name  |
++-------+
+| Nihal |
++-------+
+1 row in set (0.00 sec)
+
+mysql> create table student
+    -> ( name varchar(50),roll int(5) not null primary key,mobile no int(10));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'no int(10))' at line 2
+mysql> create table student
+    -> ( name varchar(50),roll int(5) not null primary key,mobile_no int(10));
+Query OK, 0 rows affected (0.17 sec)
+
+mysql> desc student;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| name      | varchar(50) | YES  |     | NULL    |       |
+| roll      | int(5)      | NO   | PRI | NULL    |       |
+| mobile_no | int(10)     | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> insert into student
+    -> (name,roll,mobile_no)
+    -> values('nihal',1,'444444'),
+    -> values('vikash',2,'555555'),
+    -> values('abhisek',4,'333333');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'values('vikash',2,'555555'),
+values('abhisek',4,'333333')' at line 4
+mysql> (name,roll,mobile_no)
+    ->
+    -> insert into student
+    -> (name,roll,mobile_no)
+    -> values('nihal',1,'444444');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'name,roll,mobile_no)
+
+insert into student
+(name,roll,mobile_no)
+values('nihal',' at line 1
+mysql> insert into student
+    -> (name,roll,mobile_no)
+    -> values('nihal',1,444444),
+    -> values('vikash',2,'555555'),
+    -> values('abhisek',4,333333);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'values('vikash',2,'555555'),
+values('abhisek',4,333333)' at line 4
+mysql> insert into student
+    -> (name,roll,mobile_no)
+    -> values('nihal',1,444444);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into student
+    -> values('vikash',2,555555),
+    -> values('abhisek',4,333333);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'values('abhisek',4,333333)' at line 3
+mysql> show tables;
++---------------+
+| Tables_in_new |
++---------------+
+| a             |
+| c             |
+| student       |
++---------------+
+3 rows in set (0.00 sec)
+
+mysql> use a;
+ERROR 1049 (42000): Unknown database 'a'
+mysql> use c;
+ERROR 1049 (42000): Unknown database 'c'
+mysql> select *from a;
++------------+------+----------+
+| name       | roll | address  |
++------------+------+----------+
+| nihal      |   34 | bareilly |
+| asad       |   12 | delhi    |
+| abhisekh   |    2 | noida    |
+| vikash     |   62 | japan    |
+| sourabh    |    9 | saket    |
+| rishab'sir |    9 | gurgaon  |
++------------+------+----------+
+6 rows in set (0.09 sec)
+
+mysql> insert into a(name,roll,address)
+    -> values('a',1,'c'),
+    -> values('b',3,'d');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'values('b',3,'d')' at line 3
+mysql> insert into a(name,roll,address)
+    -> values('a',1,'c'),
+    -> ('b',3,'d');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-------+------+-----------+
+| name  | roll | mobile_no |
++-------+------+-----------+
+| nihal |    1 |    444444 |
++-------+------+-----------+
+1 row in set (0.00 sec)
+
+mysql>  insert into student
+    ->     -> (name,roll,mobile_no)
+    ->     -> values('nihal',1,444444),
+    ->     -> values('vikash',2,'555555'),
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '-> (name,roll,mobile_no)
+    -> values('nihal',1,444444),
+    -> values('vikash'' at line 2
+mysql> insert into student
+    -> values('vikas',2,99999),('sourabh',3,666666),('rishab',4,77777);
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++---------+------+-----------+
+| name    | roll | mobile_no |
++---------+------+-----------+
+| nihal   |    1 |    444444 |
+| vikas   |    2 |     99999 |
+| sourabh |    3 |    666666 |
+| rishab  |    4 |     77777 |
++---------+------+-----------+
+4 rows in set (0.00 sec)
+
+mysql> select * from c;
++------+-------+--------+----------+
+| id   | name  | salary | city     |
++------+-------+--------+----------+
+|    1 | Asad  |  35000 | Bareilly |
+|    2 | Nihal |  45000 | Bareilly |
+|    3 | Afzal |  60000 | Dahia    |
++------+-------+--------+----------+
+3 rows in set (0.01 sec)
+
+mysql> select name,max(salary)as salary from c
+    -> where salary <(select max(salaary)from c);
+ERROR 1054 (42S22): Unknown column 'salaary' in 'field list'
+mysql> select name,max(salary)as salary from c
+    -> where salary <(select max(salary)from c);
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'new.c.name'; this is incompatible with sql_mode=only_full_group_by
+mysql> select city as address from c;
++----------+
+| address  |
++----------+
+| Bareilly |
+| Bareilly |
+| Dahia    |
++----------+
+3 rows in set (0.00 sec)
+
+mysql> select*from c;
++------+-------+--------+----------+
+| id   | name  | salary | city     |
++------+-------+--------+----------+
+|    1 | Asad  |  35000 | Bareilly |
+|    2 | Nihal |  45000 | Bareilly |
+|    3 | Afzal |  60000 | Dahia    |
++------+-------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select city  address from c;c
++----------+
+| address  |
++----------+
+| Bareilly |
+| Bareilly |
+| Dahia    |
++----------+
+3 rows in set (0.00 sec)
+
+    -> select * from c;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'c
+select * from c' at line 1
+mysql> select * from c;
++------+-------+--------+----------+
+| id   | name  | salary | city     |
++------+-------+--------+----------+
+|    1 | Asad  |  35000 | Bareilly |
+|    2 | Nihal |  45000 | Bareilly |
+|    3 | Afzal |  60000 | Dahia    |
++------+-------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select name,salary,salary+5 from c;
++-------+--------+----------+
+| name  | salary | salary+5 |
++-------+--------+----------+
+| Asad  |  35000 |    35005 |
+| Nihal |  45000 |    45005 |
+| Afzal |  60000 |    60005 |
++-------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select name,salary,salary+5 as new salary from c;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'salary from c' at line 1
+mysql> select name,salary,salary+5 as " new salary" from c;
++-------+--------+------------+
+| name  | salary | new salary |
++-------+--------+------------+
+| Asad  |  35000 |      35005 |
+| Nihal |  45000 |      45005 |
+| Afzal |  60000 |      60005 |
++-------+--------+------------+
+3 rows in set, 1 warning (0.00 sec)
+
+mysql> alter table c
+    -> add column city varchar(50);
+ERROR 1060 (42S21): Duplicate column name 'city'
+mysql> alter table c
+    -> add column dept varchar(50);
+Query OK, 3 rows affected (0.17 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select*from c;
++------+-------+--------+----------+------+
+| id   | name  | salary | city     | dept |
++------+-------+--------+----------+------+
+|    1 | Asad  |  35000 | Bareilly | NULL |
+|    2 | Nihal |  45000 | Bareilly | NULL |
+|    3 | Afzal |  60000 | Dahia    | NULL |
++------+-------+--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> alter table c
+    -> add column nihal varchar(50)first;
+Query OK, 3 rows affected (0.20 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select *from c;
++-------+------+-------+--------+----------+------+
+| nihal | id   | name  | salary | city     | dept |
++-------+------+-------+--------+----------+------+
+| NULL  |    1 | Asad  |  35000 | Bareilly | NULL |
+| NULL  |    2 | Nihal |  45000 | Bareilly | NULL |
+| NULL  |    3 | Afzal |  60000 | Dahia    | NULL |
++-------+------+-------+--------+----------+------+
+3 rows in set (0.01 sec)
+
+mysql> alter table c
+    -> drop column nihal;
+Query OK, 3 rows affected (0.09 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from c;
++------+-------+--------+----------+------+
+| id   | name  | salary | city     | dept |
++------+-------+--------+----------+------+
+|    1 | Asad  |  35000 | Bareilly | NULL |
+|    2 | Nihal |  45000 | Bareilly | NULL |
+|    3 | Afzal |  60000 | Dahia    | NULL |
++------+-------+--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> desc c;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int(5)      | YES  | UNI | NULL    |       |
+| name   | varchar(50) | YES  |     | NULL    |       |
+| salary | int(5)      | YES  |     | NULL    |       |
+| city   | varchar(50) | YES  |     | NULL    |       |
+| dept   | varchar(50) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> update c
+    -> set salary=5000 where name='afjal';
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 0  Changed: 0  Warnings: 0
+
+mysql> select * from c;
++------+-------+--------+----------+------+
+| id   | name  | salary | city     | dept |
++------+-------+--------+----------+------+
+|    1 | Asad  |  35000 | Bareilly | NULL |
+|    2 | Nihal |  45000 | Bareilly | NULL |
+|    3 | Afzal |  60000 | Dahia    | NULL |
++------+-------+--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> update c
+    -> set salary=5000 where name='afzal';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from c;
++------+-------+--------+----------+------+
+| id   | name  | salary | city     | dept |
++------+-------+--------+----------+------+
+|    1 | Asad  |  35000 | Bareilly | NULL |
+|    2 | Nihal |  45000 | Bareilly | NULL |
+|    3 | Afzal |   5000 | Dahia    | NULL |
++------+-------+--------+----------+------+
+3 rows in set (0.02 sec)
+
+mysql> select * from c;
++------+-------+--------+----------+------+
+| id   | name  | salary | city     | dept |
++------+-------+--------+----------+------+
+|    1 | Asad  |  35000 | Bareilly | NULL |
+|    2 | Nihal |  45000 | Bareilly | NULL |
+|    3 | Afzal |   5000 | Dahia    | NULL |
++------+-------+--------+----------+------+
+3 rows in set (0.00 sec)
+
+mysql> update c
+    -> set dept='mindfire'where name ='afzal';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update c
+    -> set dept='cdac'where name ='nihal';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update c
+    -> set dept='mindfiree'where name ='asad';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from c;
++------+-------+--------+----------+-----------+
+| id   | name  | salary | city     | dept      |
++------+-------+--------+----------+-----------+
+|    1 | Asad  |  35000 | Bareilly | mindfiree |
+|    2 | Nihal |  45000 | Bareilly | cdac      |
+|    3 | Afzal |   5000 | Dahia    | mindfire  |
++------+-------+--------+----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> select count(name) from c;
++-------------+
+| count(name) |
++-------------+
+|           3 |
++-------------+
+1 row in set (0.09 sec)
+
+mysql> sec
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'sec' at line 1
+mysql> select count(distinct name)from c;
++----------------------+
+| count(distinct name) |
++----------------------+
+|                    3 |
++----------------------+
+1 row in set (0.16 sec)
+
+mysql> select max(salary)from c
+    -> where salary<(select max(salary) from c));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 2
+mysql> select max(salary)from c
+    -> where salary<(select max(salary) from c);
++-------------+
+| max(salary) |
++-------------+
+|       35000 |
++-------------+
+1 row in set (0.29 sec)
+
+mysql> select max(salary)from c
+    -> where salary<(select max(salary) from c where salary<select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select max(salary) from c)' at line 2
+mysql> select max(salary)from c
+    -> where salary<(select max(salary) from c where salary<(select max(salary) from c));
++-------------+
+| max(salary) |
++-------------+
+|        5000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select name from c
+    -> where salary=( select max(salary)from c where salary<(select max(salary) from c where salary<(select max(salary) from c)));
++-------+
+| name  |
++-------+
+| Afzal |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select name,salary from c
+    -> where salary=( select max(salary)from c where salary<(select max(salary) from c where salary<(select max(salary) from c)));
++-------+--------+
+| name  | salary |
++-------+--------+
+| Afzal |   5000 |
++-------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from c
+    -> where salary=( select max(salary)from c where salary<(select max(salary) from c where salary<(select max(salary) from c)));
++------+-------+--------+-------+----------+
+| id   | name  | salary | city  | dept     |
++------+-------+--------+-------+----------+
+|    3 | Afzal |   5000 | Dahia | mindfire |
++------+-------+--------+-------+----------+
+1 row in set (0.00 sec)
+
+mysql> desc c;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int(5)      | YES  | UNI | NULL    |       |
+| name   | varchar(50) | YES  |     | NULL    |       |
+| salary | int(5)      | YES  |     | NULL    |       |
+| city   | varchar(50) | YES  |     | NULL    |       |
+| dept   | varchar(50) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> alter table c
+    -> add primary key (id);
+Query OK, 3 rows affected (0.13 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> desc c;
++--------+-------------+------+-----+---------+-------+
+| Field  | Type        | Null | Key | Default | Extra |
++--------+-------------+------+-----+---------+-------+
+| id     | int(5)      | NO   | PRI | NULL    |       |
+| name   | varchar(50) | YES  |     | NULL    |       |
+| salary | int(5)      | YES  |     | NULL    |       |
+| city   | varchar(50) | YES  |     | NULL    |       |
+| dept   | varchar(50) | YES  |     | NULL    |       |
++--------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+mysql> create table n
+    -> (id int,name varchar(50),city varchar(50), foriegn key (id) reference c (id));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'key (id) reference c (id))' at line 2
+mysql> create table n
+    -> (id int,name varchar(50),city varchar(50), foreign key (id) references c (id));
+Query OK, 0 rows affected (0.18 sec)
+
+mysql> desc n;
++-------+-------------+------+-----+---------+-------+
+| Field | Type        | Null | Key | Default | Extra |
++-------+-------------+------+-----+---------+-------+
+| id    | int(11)     | YES  | MUL | NULL    |       |
+| name  | varchar(50) | YES  |     | NULL    |       |
+| city  | varchar(50) | YES  |     | NULL    |       |
++-------+-------------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+mysql> select * from c cross join n;
+Empty set (0.00 sec)
+
+mysql> insert into n
+    -> values (1,'aman','goa'),(2,'mukul','mumbai'),(4,'aasim','pune');
+Query OK, 3 rows affected (0.00 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from c cross join n;
++----+-------+--------+----------+-----------+------+-------+--------+
+| id | name  | salary | city     | dept      | id   | name  | city   |
++----+-------+--------+----------+-----------+------+-------+--------+
+|  1 | Asad  |  35000 | Bareilly | mindfiree |    1 | aman  | goa    |
+|  1 | Asad  |  35000 | Bareilly | mindfiree |    2 | mukul | mumbai |
+|  1 | Asad  |  35000 | Bareilly | mindfiree |    4 | aasim | pune   |
+|  2 | Nihal |  45000 | Bareilly | cdac      |    1 | aman  | goa    |
+|  2 | Nihal |  45000 | Bareilly | cdac      |    2 | mukul | mumbai |
+|  2 | Nihal |  45000 | Bareilly | cdac      |    4 | aasim | pune   |
+|  3 | Afzal |   5000 | Dahia    | mindfire  |    1 | aman  | goa    |
+|  3 | Afzal |   5000 | Dahia    | mindfire  |    2 | mukul | mumbai |
+|  3 | Afzal |   5000 | Dahia    | mindfire  |    4 | aasim | pune   |
++----+-------+--------+----------+-----------+------+-------+--------+
+9 rows in set (0.02 sec)
+
+mysql> select * from n;
++------+-------+--------+
+| id   | name  | city   |
++------+-------+--------+
+|    1 | aman  | goa    |
+|    2 | mukul | mumbai |
+|    4 | aasim | pune   |
++------+-------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select c.name,n.city from c inner join n
+    -> on c.id=n.id;
++-------+--------+
+| name  | city   |
++-------+--------+
+| Asad  | goa    |
+| Nihal | mumbai |
++-------+--------+
+2 rows in set (0.04 sec)
+
+mysql> select c.name,n.name from c inner join n
+    -> on c.id<>n.id;
++-------+-------+
+| name  | name  |
++-------+-------+
+| Nihal | aman  |
+| Afzal | aman  |
+| Asad  | mukul |
+| Afzal | mukul |
+| Asad  | aasim |
+| Nihal | aasim |
+| Afzal | aasim |
++-------+-------+
+7 rows in set (0.00 sec)
+
+mysql> select c.name,n,city from c left join n
+    -> on c.id=n.id;
+ERROR 1054 (42S22): Unknown column 'n' in 'field list'
+mysql> select c.name,n.city from c left join n
+    -> on c.id=n.id;
++-------+--------+
+| name  | city   |
++-------+--------+
+| Asad  | goa    |
+| Nihal | mumbai |
+| Afzal | NULL   |
++-------+--------+
+3 rows in set (0.07 sec)
+
+mysql> select c.name,n,city from c full join n
+    -> on c.id=n.id;
+ERROR 1054 (42S22): Unknown column 'c.name' in 'field list'
+mysql> select c.name,n.city from c left join n
+    -> on c.id=n.id;
++-------+--------+
+| name  | city   |
++-------+--------+
+| Asad  | goa    |
+| Nihal | mumbai |
+| Afzal | NULL   |
++-------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select c.name,n.city from c full join n
+    -> on c.id=n.id;
+ERROR 1054 (42S22): Unknown column 'c.name' in 'field list'
+mysql> select name,city from c left join n
+    -> on c.id=n.id;
+ERROR 1052 (23000): Column 'name' in field list is ambiguous
+mysql> select * from c full join n
+    -> on c.id=n.id;
+ERROR 1054 (42S22): Unknown column 'c.id' in 'on clause'
+mysql> create table emp(id int autoincrement,name varchar(50),manid int);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'autoincrement,name varchar(50),manid int)' at line 1
+mysql> create table emp(id int ,name varchar(50),manid int);
+Query OK, 0 rows affected (0.14 sec)
+
+mysql> insert into emp values(1,'rahul',3),(2,'jay',3),(3,'sonam',4),(4,'kunal',5),(5,'ram',6),(6,'rani'),
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql>
+mysql>
+mysql> insert into emp values(1,'rahul',3),(2,'jay',3),(3,'sonam',4),(4,'kunal',5),(5,'ram',6),(6,'rani','null');
+Query OK, 6 rows affected, 1 warning (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 1
+
+mysql> select * from emp;
++------+-------+-------+
+| id   | name  | manid |
++------+-------+-------+
+|    1 | rahul |     3 |
+|    2 | jay   |     3 |
+|    3 | sonam |     4 |
+|    4 | kunal |     5 |
+|    5 | ram   |     6 |
+|    6 | rani  |     0 |
++------+-------+-------+
+6 rows in set (0.00 sec)
+
+mysql> select e.name,m.name manager from emp e
+    -> inner join empman m
+    -> on e.manidm.empid;
+ERROR 1146 (42S02): Table 'new.empman' doesn't exist
+mysql> select e.name,m.name manager from emp e0
+    -> inner join emp m
+    -> on e.manid=m.empid;
+ERROR 1054 (42S22): Unknown column 'e.name' in 'field list'
+mysql> select e.name name,m.name manager from emp e
+    -> inner join emp m
+    -> on e.manid=m.empid;
+ERROR 1054 (42S22): Unknown column 'm.empid' in 'on clause'
+mysql> select e.name name,m.name manager from emp e
+    -> inner join emp m
+    -> on e.manid=m.id;
++-------+---------+
+| name  | manager |
++-------+---------+
+| rahul | sonam   |
+| jay   | sonam   |
+| sonam | kunal   |
+| kunal | ram     |
+| ram   | rani    |
++-------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select e.name name,m.name manager from emp e inner join emp m
+    -> on e.id=m.manid;
++-------+---------+
+| name  | manager |
++-------+---------+
+| sonam | rahul   |
+| sonam | jay     |
+| kunal | sonam   |
+| ram   | kunal   |
+| rani  | ram     |
++-------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select e.name name,m.name manager from emp e left join emp m
+    -> on e.id=m.manid;
++-------+---------+
+| name  | manager |
++-------+---------+
+| sonam | rahul   |
+| sonam | jay     |
+| kunal | sonam   |
+| ram   | kunal   |
+| rani  | ram     |
+| rahul | NULL    |
+| jay   | NULL    |
++-------+---------+
+7 rows in set (0.00 sec)
+
+mysql> select e.name name,m.name manager from emp e inner join emp m
+    -> on e.id=m.manid;
++-------+---------+
+| name  | manager |
++-------+---------+
+| sonam | rahul   |
+| sonam | jay     |
+| kunal | sonam   |
+| ram   | kunal   |
+| rani  | ram     |
++-------+---------+
+5 rows in set (0.00 sec)
+
+mysql> select e.name name,m.name manager from emp e left join emp m
+    -> on e.manid=m.id;
++-------+---------+
+| name  | manager |
++-------+---------+
+| rahul | sonam   |
+| jay   | sonam   |
+| sonam | kunal   |
+| kunal | ram     |
+| ram   | rani    |
+| rani  | NULL    |
++-------+---------+
+6 rows in set (0.00 sec)
+
+mysql> select name from c
+    -> union
+    -> select name from n;
++-------+
+| name  |
++-------+
+| Asad  |
+| Nihal |
+| Afzal |
+| aman  |
+| mukul |
+| aasim |
++-------+
+6 rows in set (0.06 sec)
+
+mysql> select * from c;
++----+-------+--------+----------+-----------+
+| id | name  | salary | city     | dept      |
++----+-------+--------+----------+-----------+
+|  1 | Asad  |  35000 | Bareilly | mindfiree |
+|  2 | Nihal |  45000 | Bareilly | cdac      |
+|  3 | Afzal |   5000 | Dahia    | mindfire  |
++----+-------+--------+----------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> insert into c
+    -> (id,name,salary,city,dept)
+    -> (4,'aasim',7000,'goa','tcs'),(5,'cena',1000,'maday','wipro');
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '4,'aasim',7000,'goa','tcs'),(5,'cena',1000,'maday','wipro')' at line 3
+mysql> insert into c
+    -> (id,name,salary,city,dept)
+    -> values(4,'aasim',7000,'goa','tcs'),(5,'cena',1000,'maday','wipro');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select  name,count(*) from c;
+ERROR 1140 (42000): In aggregated query without GROUP BY, expression #1 of SELECT list contains nonaggregated column 'new.c.name'; this is incompatible with sql_mode=only_full_group_by
+mysql> select count(name) from c;
++-------------+
+| count(name) |
++-------------+
+|           5 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> alter table c
+    -> add column man int;
+Query OK, 5 rows affected (0.17 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from c;
++----+-------+--------+----------+-----------+------+
+| id | name  | salary | city     | dept      | man  |
++----+-------+--------+----------+-----------+------+
+|  1 | Asad  |  35000 | Bareilly | mindfiree | NULL |
+|  2 | Nihal |  45000 | Bareilly | cdac      | NULL |
+|  3 | Afzal |   5000 | Dahia    | mindfire  | NULL |
+|  4 | aasim |   7000 | goa      | tcs       | NULL |
+|  5 | cena  |   1000 | maday    | wipro     | NULL |
++----+-------+--------+----------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> alter table c
+    -> add column nihal varchar(50) after name;
+Query OK, 5 rows affected (0.17 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from c;
++----+-------+-------+--------+----------+-----------+------+
+| id | name  | nihal | salary | city     | dept      | man  |
++----+-------+-------+--------+----------+-----------+------+
+|  1 | Asad  | NULL  |  35000 | Bareilly | mindfiree | NULL |
+|  2 | Nihal | NULL  |  45000 | Bareilly | cdac      | NULL |
+|  3 | Afzal | NULL  |   5000 | Dahia    | mindfire  | NULL |
+|  4 | aasim | NULL  |   7000 | goa      | tcs       | NULL |
+|  5 | cena  | NULL  |   1000 | maday    | wipro     | NULL |
++----+-------+-------+--------+----------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> alter table c
+    -> change column nihal papa vaarchar(50);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'vaarchar(50)' at line 2
+mysql> alter table c
+    -> change column nihal papa varchar(50);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select * from c;
++----+-------+------+--------+----------+-----------+------+
+| id | name  | papa | salary | city     | dept      | man  |
++----+-------+------+--------+----------+-----------+------+
+|  1 | Asad  | NULL |  35000 | Bareilly | mindfiree | NULL |
+|  2 | Nihal | NULL |  45000 | Bareilly | cdac      | NULL |
+|  3 | Afzal | NULL |   5000 | Dahia    | mindfire  | NULL |
+|  4 | aasim | NULL |   7000 | goa      | tcs       | NULL |
+|  5 | cena  | NULL |   1000 | maday    | wipro     | NULL |
++----+-------+------+--------+----------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> alter table c
+    -> drop column papa;
+Query OK, 5 rows affected (0.13 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from c;
++----+-------+--------+----------+-----------+------+
+| id | name  | salary | city     | dept      | man  |
++----+-------+--------+----------+-----------+------+
+|  1 | Asad  |  35000 | Bareilly | mindfiree | NULL |
+|  2 | Nihal |  45000 | Bareilly | cdac      | NULL |
+|  3 | Afzal |   5000 | Dahia    | mindfire  | NULL |
+|  4 | aasim |   7000 | goa      | tcs       | NULL |
+|  5 | cena  |   1000 | maday    | wipro     | NULL |
++----+-------+--------+----------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> rename table c to l;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from l;
++----+-------+--------+----------+-----------+------+
+| id | name  | salary | city     | dept      | man  |
++----+-------+--------+----------+-----------+------+
+|  1 | Asad  |  35000 | Bareilly | mindfiree | NULL |
+|  2 | Nihal |  45000 | Bareilly | cdac      | NULL |
+|  3 | Afzal |   5000 | Dahia    | mindfire  | NULL |
+|  4 | aasim |   7000 | goa      | tcs       | NULL |
+|  5 | cena  |   1000 | maday    | wipro     | NULL |
++----+-------+--------+----------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> rename table l to c;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from c;
++----+-------+--------+----------+-----------+------+
+| id | name  | salary | city     | dept      | man  |
++----+-------+--------+----------+-----------+------+
+|  1 | Asad  |  35000 | Bareilly | mindfiree | NULL |
+|  2 | Nihal |  45000 | Bareilly | cdac      | NULL |
+|  3 | Afzal |   5000 | Dahia    | mindfire  | NULL |
+|  4 | aasim |   7000 | goa      | tcs       | NULL |
+|  5 | cena  |   1000 | maday    | wipro     | NULL |
++----+-------+--------+----------+-----------+------+
+5 rows in set (0.00 sec)
+
+mysql> rename table l to c;
+ERROR 1050 (42S01): Table 'c' already exists
+mysql> update table c
+    -> set name='bhai'
+    -> where salary=1000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'table c
+set name='bhai'
+where salary=1000' at line 1
+mysql> update  c
+    -> set name='bhai'
+    -> where salary=1000;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> rename table c to l;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> update l
+    -> set man
+    -> case
+    -> when salary>5000 then 'first'
+    -> ;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'case
+when salary>5000 then 'first'' at line 3
+mysql> update l
+    -> set man
+    -> case
+    -> when salary>5000 then 'first'
+    -> end;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'case
+when salary>5000 then 'first'
+end' at line 3
+mysql> update l
+    -> set man=
+    -> case
+    -> when salary>5000 then 'first'
+    -> end;
+ERROR 1366 (HY000): Incorrect integer value: 'first' for column 'man' at row 1
+mysql>

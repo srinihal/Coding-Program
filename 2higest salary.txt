@@ -1,0 +1,124 @@
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| emp                |
+| first              |
+| login              |
+| man                |
+| mysql              |
+| new                |
+| nm                 |
+| performance_schema |
+| sys                |
++--------------------+
+10 rows in set (0.00 sec)
+
+mysql> use new;
+Database changed
+mysql> show tables;
++---------------+
+| Tables_in_new |
++---------------+
+| a             |
+| c             |
++---------------+
+2 rows in set (0.00 sec)
+
+mysql> use c;
+ERROR 1049 (42000): Unknown database 'c'
+mysql> select* from  c;
++------+-------+--------+----------+
+| id   | name  | salary | city     |
++------+-------+--------+----------+
+|    1 | Asad  |  35000 | Bareilly |
+|    2 | Nihal |  45000 | Bareilly |
+|    3 | Afzal |  60000 | Dahia    |
++------+-------+--------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select name from c
+    -> where salary=(select max(salary) from c);
++-------+
+| name  |
++-------+
+| Afzal |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select name from c
+    -> where salary=(select max(salary) from c where salary<(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> select name from c
+    -> where salary=(select max(salary) from c <(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '<(select max(salary) from c)' at line 2
+mysql> select name from c
+    -> (select max(salary) from c where salary<(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(select max(salary) from c where salary<(select max(salary) from c)' at line 2
+mysql> select name from c
+    -> where salary<(select max(salary) from c <(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '<(select max(salary) from c)' at line 2
+mysql> select name from c
+    -> where salary(select max(salary) from c where salary=(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select max(salary) from c where salary=(select max(salary) from c)' at line 2
+mysql> select max(salary) from c
+    -> where salary<(select max(salary) from c);
++-------------+
+| max(salary) |
++-------------+
+|       45000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select max(salary) from c
+    -> where salary<(select max(salary) from  c where salary <(select max(salary) from c);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 2
+mysql> select max(salary) from c
+    -> where salary(select max(salary) from c where salary=(select max(salary) from c));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select max(salary) from c where salary=(select max(salary) from c))' at line 2
+mysql> select max(salary) from c
+    -> where salary<(select max(salary) from  c where salary <(select max(salary) from c));
++-------------+
+| max(salary) |
++-------------+
+|       35000 |
++-------------+
+1 row in set (0.00 sec)
+
+mysql> select name from c
+    -> where salary=select max(salary) from c
+    ->  where salary<(select max(salary) from  c where salary <(select max(salary) from c));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'select max(salary) from c
+ where salary<(select max(salary) from  c where salary' at line 2
+mysql> select name from c
+    -> where salary<(select max(salary) from  c where salary <(select max(salary) from c));
++------+
+| name |
++------+
+| Asad |
++------+
+1 row in set (0.00 sec)
+
+mysql> select name from c
+    -> where salary<(select max(salary) from  c);
++-------+
+| name  |
++-------+
+| Asad  |
+| Nihal |
++-------+
+2 rows in set (0.00 sec)
+
+mysql> select name from c
+    -> where salary=(select max(salary) from c where salary<(select max(salary) from c));
++-------+
+| name  |
++-------+
+| Nihal |
++-------+
+1 row in set (0.00 sec)
+
+mysql>

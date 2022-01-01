@@ -1,0 +1,32 @@
+#include<bits/stdc++.h>
+using namespace std;
+int main()
+{
+    string s;
+    getline(cin,s);
+    int i =s.length()-1;
+    int start,end=i+1;
+    string result=" ";
+    while(i>=0)
+    {
+        if(s[i] == ' ')
+        {
+            start=i+1;
+        while(start!=end)
+        {
+            result+=s[start++];
+            
+        }
+        result+=' ';
+        end=i;
+        }
+        i--;
+    }
+    start=0;
+    while(start!=end)
+    {
+        result=result+s[start];
+        start++;
+    }
+    cout<<result;
+}

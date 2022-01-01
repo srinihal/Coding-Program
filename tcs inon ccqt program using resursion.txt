@@ -1,0 +1,25 @@
+#include<bits/stdc++.h>
+using namespace std;
+int digsum(int n)
+{
+    int sum=0;
+    while(n!=0)
+    {
+        sum=n%10+sum;
+        n=n/10;
+    }
+    if(sum>=10)
+    {
+        digsum(sum);
+    }
+    else
+    return sum;
+    
+}
+int main()
+{
+    int n;
+    cin>>n;
+    cout<<digsum(n);
+    
+}

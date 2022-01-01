@@ -1,0 +1,25 @@
+#include<bits/stdc++.h>
+using namespace std;
+void rev(char *s)
+{
+    static int l=0,r=strlen(s)-1;
+    char temp;
+    if(l<r)
+    {
+    
+        temp=*(s+l);
+        *(s+l)=*(s+r);
+        *(s+r)=temp;
+        l++;
+        r--;
+        rev(s);
+    }
+}
+int main()
+{
+    char s[100];
+    cin>>s;
+    rev(s);
+    cout<<s;
+    return 0;
+}

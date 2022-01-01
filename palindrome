@@ -1,0 +1,50 @@
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    int n,l,i,flag=0;
+
+    string arr;
+    cin>>arr;
+    l = arr.length();
+    for(i = 0;i<l/2;i++){
+        if(arr[i] != arr[l-i-1]){
+            flag = 1;
+            break ;
+        }
+    }
+    if(flag == 1)
+        cout<<"No";
+
+    else 
+        cout<<"Yes";
+    
+    
+}
+
+
+.................
+..................
+
+Riverce String ..............
+
+
+int main()
+{
+    int n,l,i,flag=0;
+
+    string arr;
+    char s;
+    cin>>arr;
+    l = arr.length();
+    for(i = 0;i<l/2;i++){
+        s = arr[l-i-1];
+        arr[l-i-1] = arr[i];
+        arr[i] = s;
+    }
+    cout<<arr;
+    
+    
+}
